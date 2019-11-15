@@ -13,6 +13,8 @@ public class MainExampleApp extends Application {
     private static MainExampleApp sInstance;
     public static Resources sResources;
 
+    int sampleUse = 2;
+
     public MainExampleApp() {
 
 
@@ -41,21 +43,31 @@ public class MainExampleApp extends Application {
 
 
 
-        // 1. original sample
-        pagerSettings.setWizardStepsWayType(WizardStepsWayType.PreviousNext);
-        pagerSettings.setFinishStringResourceId(R.string.finish);
-        pagerSettings.setFinishButtonBackground(R.drawable.finish_background);
-        pagerSettings.setNextButtonBackground(R.drawable.selectable_item_background);
-        pagerSettings.setFinishTextAppearance(R.style.TextAppearanceFinish);
 
-        // 2. andy test sample
-        pagerSettings.setWizardStepsWayType(WizardStepsWayType.CancelNext);
-        pagerSettings.setFinishStringResourceId(R.string.finish);
-        pagerSettings.setFinishButtonBackground(R.drawable.finish_background);
-        pagerSettings.setNextButtonBackground(R.drawable.selectable_item_background);
+        if (sampleUse==1) {
 
-        WizardPagerActivity pagerActivity = new WizardPagerActivity(new SandwichWizardModel(this), pagerSettings);
-        pagerActivity.getOnCloseStatus();
+            // 1. original sample
+            pagerSettings.setWizardStepsWayType(WizardStepsWayType.PreviousNext);
+            pagerSettings.setFinishStringResourceId(R.string.finish);
+            pagerSettings.setFinishButtonBackground(R.drawable.finish_background);
+            pagerSettings.setNextButtonBackground(R.drawable.selectable_item_background);
+            pagerSettings.setFinishTextAppearance(R.style.TextAppearanceFinish);
+
+            WizardPagerActivity pagerActivity = new WizardPagerActivity(new SandwichWizardModel(this), pagerSettings);
+            pagerActivity.getOnCloseStatus();
+        } else if (sampleUse==2) {
+
+            pagerSettings.setWizardStepsWayType(WizardStepsWayType.CancelNext);
+            pagerSettings.setFinishStringResourceId(R.string.finish);
+            pagerSettings.setFinishButtonBackground(R.drawable.finish_background);
+            pagerSettings.setNextButtonBackground(R.drawable.selectable_item_background);
+
+            WizardPagerActivity pagerActivity = new WizardPagerActivity(new SandwichWizardModel(this), pagerSettings);
+            pagerActivity.getOnCloseStatus();
+        }
+
+
+
 
 
     }
