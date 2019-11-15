@@ -22,13 +22,14 @@ import java.util.List;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.ListFragment;
+import androidx.fragment.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.tech.freak.wizardpager.R;
 import com.tech.freak.wizardpager.model.Page;
 import com.tech.freak.wizardpager.model.SingleFixedChoicePage;

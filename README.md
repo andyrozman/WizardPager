@@ -40,7 +40,7 @@ There is a sample implementation, so you can see how to add this library to your
 Developed By
 ============
 
-* Tech Freak - <tech.freak.blog@gmail.com>
+* Andy Rozman - <andy.rozman@gmail.com>
 
 
 License
@@ -57,3 +57,17 @@ License
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
+
+
+History
+=======
+0.0.1 - Wizard pager was just sample application by Roman Nurik (https://github.com/romannurik/android-wizardpager)
+
+1.0.0 - Wizard pager was rewritten a little by Tech Freak & Suarez Julian (https://github.com/str4d/WizardPager) and
+        made as library.
+
+1.1.0 - made fork and created new groupId
+      - changed build to version 28 (minimal 23)
+      - added android X support
+      ? created new main activity (to simplify use)
+      ? refactored sample to use new activity

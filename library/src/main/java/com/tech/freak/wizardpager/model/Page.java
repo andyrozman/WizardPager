@@ -17,7 +17,7 @@
 package com.tech.freak.wizardpager.model;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 
@@ -39,6 +39,7 @@ public abstract class Page implements PageTreeNode {
     protected String mTitle;
     protected boolean mRequired = false;
     protected String mParentKey;
+    protected String cancelReason = null;
 
     protected Page(ModelCallbacks callbacks, String title) {
         mCallbacks = callbacks;
@@ -96,4 +97,13 @@ public abstract class Page implements PageTreeNode {
         mRequired = required;
         return this;
     }
+
+    public String getCancelReason() {
+        return cancelReason;
+    }
+
+    public void setCancelReason(String cancelReason) {
+        this.cancelReason = cancelReason;
+    }
+
 }

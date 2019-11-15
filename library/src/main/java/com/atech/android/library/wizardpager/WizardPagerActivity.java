@@ -14,11 +14,15 @@
  * limitations under the License.
  */
 
-package com.example.android.wizardpager;
+package com.atech.android.library.wizardpager;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.TypedValue;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -27,11 +31,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import android.util.TypedValue;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-
+import com.atech.android.library.wizardpager.data.WizardPagerSettings;
+import com.atech.android.library.wizardpager.defs.WizardStepsWayType;
+import com.atech.android.library.wizardpager.defs.action.AbstractFinishAction;
+import com.tech.freak.wizardpager.R;
 import com.tech.freak.wizardpager.model.AbstractWizardModel;
 import com.tech.freak.wizardpager.model.ModelCallbacks;
 import com.tech.freak.wizardpager.model.Page;
@@ -41,14 +44,15 @@ import com.tech.freak.wizardpager.ui.StepPagerStrip;
 
 import java.util.List;
 
-public class MainActivity extends FragmentActivity implements
+public class WizardPagerActivity extends FragmentActivity implements
         PageFragmentCallbacks, ReviewFragment.Callbacks, ModelCallbacks {
+
     private ViewPager mPager;
     private MyPagerAdapter mPagerAdapter;
 
     private boolean mEditingAfterReview;
 
-    private AbstractWizardModel mWizardModel = new SandwichWizardModel(this);
+    private AbstractWizardModel mWizardModel;
 
     private boolean mConsumePageSelectedEvent;
 
@@ -57,12 +61,19 @@ public class MainActivity extends FragmentActivity implements
 
     private List<Page> mCurrentPageSequence;
     private StepPagerStrip mStepPagerStrip;
+    private WizardPagerSettings wizardPagerSettings;
+    private Object onCloseStatus;
+
+    public WizardPagerActivity(AbstractWizardModel wizardModel, WizardPagerSettings pagerSettings) {
+        this.mWizardModel = wizardModel;
+        this.wizardPagerSettings = pagerSettings;
+    }
 
 
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.wizardpager_activity_main);
 
         if (savedInstanceState != null) {
             mWizardModel.load(savedInstanceState.getBundle("model"));
@@ -108,19 +119,12 @@ public class MainActivity extends FragmentActivity implements
             @Override
             public void onClick(View view) {
                 if (mPager.getCurrentItem() == mCurrentPageSequence.size()) {
-                    DialogFragment dg = new DialogFragment() {
-                        @Override
-                        public Dialog onCreateDialog(Bundle savedInstanceState) {
-                            return new AlertDialog.Builder(getActivity())
-                                    .setMessage(R.string.submit_confirm_message)
-                                    .setPositiveButton(
-                                            R.string.submit_confirm_button,
-                                            null)
-                                    .setNegativeButton(android.R.string.cancel,
-                                            null).create();
-                        }
-                    };
-                    dg.show(getSupportFragmentManager(), "place_order_dialog");
+
+                    AbstractFinishAction finishAction = wizardPagerSettings.getFinishAction();
+                    finishAction.execute();
+
+                    onCloseStatus = finishAction.getFinishActionText();
+
                 } else {
                     if (mEditingAfterReview) {
                         mPager.setCurrentItem(mPagerAdapter.getCount() - 1);
@@ -134,7 +138,16 @@ public class MainActivity extends FragmentActivity implements
         mPrevButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mPager.setCurrentItem(mPager.getCurrentItem() - 1);
+                if (wizardPagerSettings.getWizardStepsWayType()== WizardStepsWayType.PreviousNext)
+                    mPager.setCurrentItem(mPager.getCurrentItem() - 1);
+                else {
+                    if (mWizardModel.getCurrentPage().getCancelReason()==null) {
+                        onCloseStatus = "cancel";
+                    } else {
+                        onCloseStatus = mWizardModel.getCurrentPage().getCancelReason();
+                    }
+                    finish();
+                }
             }
         });
 
@@ -156,14 +169,14 @@ public class MainActivity extends FragmentActivity implements
     private void updateBottomBar() {
         int position = mPager.getCurrentItem();
         if (position == mCurrentPageSequence.size()) {
-            mNextButton.setText(R.string.finish);
-            mNextButton.setBackgroundResource(R.drawable.finish_background);
-            mNextButton.setTextAppearance(this, R.style.TextAppearanceFinish);
+            mNextButton.setText(this.wizardPagerSettings.getFinishStringResourceId());
+            mNextButton.setBackgroundResource(wizardPagerSettings.getFinishButtonBackground());
+            mNextButton.setTextAppearance(this, wizardPagerSettings.getFinishTextAppearance());
         } else {
             mNextButton.setText(mEditingAfterReview ? R.string.review
-                    : R.string.next);
+                    : wizardPagerSettings.getNextStringResourceId());
             mNextButton
-                    .setBackgroundResource(R.drawable.selectable_item_background);
+                    .setBackgroundResource(wizardPagerSettings.getNextButtonBackground());
             TypedValue v = new TypedValue();
             getTheme().resolveAttribute(android.R.attr.textAppearanceMedium, v,
                     true);
@@ -171,8 +184,13 @@ public class MainActivity extends FragmentActivity implements
             mNextButton.setEnabled(position != mPagerAdapter.getCutOffPage());
         }
 
-        mPrevButton
-                .setVisibility(position <= 0 ? View.INVISIBLE : View.VISIBLE);
+        if (wizardPagerSettings.getWizardStepsWayType()==WizardStepsWayType.PreviousNext) {
+            mPrevButton
+                    .setVisibility(position <= 0 ? View.INVISIBLE : View.VISIBLE);
+        } else {
+            mPrevButton
+                    .setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -237,6 +255,10 @@ public class MainActivity extends FragmentActivity implements
         }
 
         return false;
+    }
+
+    public Object getOnCloseStatus() {
+        return this.onCloseStatus;
     }
 
     public class MyPagerAdapter extends FragmentStatePagerAdapter {

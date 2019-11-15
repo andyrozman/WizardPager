@@ -19,6 +19,8 @@ package com.tech.freak.wizardpager.model;
 import android.content.Context;
 import android.os.Bundle;
 
+import com.atech.android.library.wizardpager.defs.WizardStepsWayType;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +36,8 @@ public abstract class AbstractWizardModel implements ModelCallbacks {
     private List<ModelCallbacks> mListeners = new ArrayList<ModelCallbacks>();
     private PageList mRootPageList;
 
+    private Page currentPage;
+
     public AbstractWizardModel(Context context) {
     	mContext = context;
     	mRootPageList = onNewRootPageList();
@@ -46,6 +50,8 @@ public abstract class AbstractWizardModel implements ModelCallbacks {
 
     @Override
     public void onPageDataChanged(Page page) {
+
+        this.currentPage = page;
         // can't use for each because of concurrent modification (review fragment
         // can get added or removed and will register itself as a listener)
         for (int i = 0; i < mListeners.size(); i++) {
@@ -96,5 +102,9 @@ public abstract class AbstractWizardModel implements ModelCallbacks {
 
     public void unregisterListener(ModelCallbacks listener) {
         mListeners.remove(listener);
+    }
+
+    public Page getCurrentPage() {
+        return currentPage;
     }
 }
