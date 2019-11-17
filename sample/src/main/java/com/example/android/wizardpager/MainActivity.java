@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.android.wizardpager.pod.InitPodWizardModel;
 import com.tech.freak.wizardpager.model.AbstractWizardModel;
 import com.tech.freak.wizardpager.model.ModelCallbacks;
 import com.tech.freak.wizardpager.model.Page;
@@ -46,7 +47,8 @@ public class MainActivity extends FragmentActivity implements
 
     private boolean mEditingAfterReview;
 
-    private AbstractWizardModel mWizardModel = new SandwichWizardModel(this);
+    //private AbstractWizardModel mWizardModel = new SandwichWizardModel(this);
+    private AbstractWizardModel mWizardModel = new InitPodWizardModel(this);
 
     private boolean mConsumePageSelectedEvent;
 

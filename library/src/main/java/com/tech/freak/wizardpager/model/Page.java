@@ -17,6 +17,7 @@
 package com.tech.freak.wizardpager.model;
 
 import android.os.Bundle;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 
 import java.util.ArrayList;
@@ -37,12 +38,19 @@ public abstract class Page implements PageTreeNode {
      */
     protected Bundle mData = new Bundle();
     protected String mTitle;
+    @StringRes int titleId;
     protected boolean mRequired = false;
     protected String mParentKey;
+    protected boolean titleIdSet = false;
 
     protected Page(ModelCallbacks callbacks, String title) {
         mCallbacks = callbacks;
         mTitle = title;
+    }
+
+    protected Page(ModelCallbacks callbacks, @StringRes int titleId) {
+        mCallbacks = callbacks;
+        this.titleId = titleId;
     }
 
     public Bundle getData() {
@@ -51,6 +59,10 @@ public abstract class Page implements PageTreeNode {
 
     public String getTitle() {
         return mTitle;
+    }
+
+    public @StringRes int getTitleId() {
+        return titleId;
     }
 
     public boolean isRequired() {
@@ -74,7 +86,10 @@ public abstract class Page implements PageTreeNode {
     public abstract Fragment createFragment();
 
     public String getKey() {
-        return (mParentKey != null) ? mParentKey + ":" + mTitle : mTitle;
+
+        String titleInput = (mTitle==null) ? "" + titleId : mTitle;
+
+        return (mParentKey != null) ? mParentKey + ":" + titleInput : titleInput;
     }
 
     public abstract void getReviewItems(ArrayList<ReviewItem> dest);
