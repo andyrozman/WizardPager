@@ -3,6 +3,9 @@ package com.atech.android.library.wizardpager.ui;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.StringRes;
+import android.support.annotation.StyleRes;
+import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -13,13 +16,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
-
 import com.tech.freak.wizardpager.R;
 import com.tech.freak.wizardpager.model.Page;
 import com.tech.freak.wizardpager.ui.PageFragmentCallbacks;
 
-// TODO rework this, add new fragment
 public class DisplayTextFragment extends Fragment {
 	protected static final String ARG_KEY = "key";
 
@@ -27,14 +27,20 @@ public class DisplayTextFragment extends Fragment {
 	private String mKey;
 	private Page mPage;
 
-	protected EditText mEditTextInput;
+	@StringRes int displayTextId;
 
-	public static DisplayTextFragment create(String key) {
+	@StyleRes int displayTextStyle;
+
+	protected TextView displayText;
+
+	public static DisplayTextFragment create(String key, @StringRes int displayTextId, @StyleRes int displayTextStyle) {
 		Bundle args = new Bundle();
 		args.putString(ARG_KEY, key);
 
 		DisplayTextFragment f = new DisplayTextFragment();
 		f.setArguments(args);
+		f.setDisplayTextId(displayTextId);
+		f.setDisplayTextStyle(displayTextStyle);
 		return f;
 	}
 
@@ -50,13 +56,14 @@ public class DisplayTextFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_page_text,
+		View rootView = inflater.inflate(R.layout.fragment_page_display_text,
 				container, false);
 		((TextView) rootView.findViewById(android.R.id.title)).setText(mPage
-				.getTitle());
+				.getTitleId());
 
-		mEditTextInput = (EditText) rootView.findViewById(R.id.editTextInput);
-		mEditTextInput.setText(mPage.getData().getString(Page.SIMPLE_DATA_KEY));
+		displayText = (TextView) rootView.findViewById(R.id.pageDisplay_textView);
+		displayText.setText(displayTextId);
+		displayText.setTextAppearance(displayTextStyle);
 		return rootView;
 	}
 
@@ -81,48 +88,33 @@ public class DisplayTextFragment extends Fragment {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		setInputType();
-		mEditTextInput.addTextChangedListener(new TextWatcher() {
 
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-			}
 
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
-			}
-
-			@Override
-			public void afterTextChanged(Editable editable) {
-				mPage.getData().putString(Page.SIMPLE_DATA_KEY,
-						(editable != null) ? editable.toString() : null);
-				mPage.notifyDataChanged();
-
-			}
-
-		});
-	}
-
-	protected void setInputType() {
-		mEditTextInput.setInputType(InputType.TYPE_CLASS_TEXT);
 	}
 
 	@Override
 	public void setMenuVisibility(boolean menuVisible) {
 		super.setMenuVisibility(menuVisible);
-
-		// In a future update to the support library, this should override
-		// setUserVisibleHint
-		// instead of setMenuVisibility.
-		if (mEditTextInput != null) {
-			InputMethodManager imm = (InputMethodManager) getActivity()
-					.getSystemService(Context.INPUT_METHOD_SERVICE);
-			if (!menuVisible) {
-				imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-			}
-		}
 	}
+
+
+	public int getDisplayTextId() {
+		return this.displayTextId;
+	}
+
+	public void setDisplayTextId(int displayTextId) {
+		this.displayTextId = displayTextId;
+	}
+
+
+	public int getDisplayTextStyle() {
+		return displayTextStyle;
+	}
+
+	public void setDisplayTextStyle(int displayTextStyle) {
+		this.displayTextStyle = displayTextStyle;
+	}
+
+
 
 }

@@ -1,9 +1,11 @@
 package com.atech.android.library.wizardpager.model;
 
+import android.support.annotation.StringRes;
+import android.support.annotation.StyleRes;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 
-import androidx.fragment.app.Fragment;
-
+import com.atech.android.library.wizardpager.ui.DisplayTextFragment;
 import com.tech.freak.wizardpager.model.ModelCallbacks;
 import com.tech.freak.wizardpager.model.Page;
 import com.tech.freak.wizardpager.model.ReviewItem;
@@ -13,13 +15,18 @@ import java.util.ArrayList;
 
 public class DisplayTextPage extends Page {
 
-	public DisplayTextPage(ModelCallbacks callbacks, String title) {
-		super(callbacks, title);
+	@StringRes int displayTextId;
+	@StyleRes int displayTextStyle;
+
+	public DisplayTextPage(ModelCallbacks callbacks, @StringRes int titleId, @StringRes int displayTextId, @StyleRes int textStyle) {
+		super(callbacks, titleId);
+		this.displayTextId = displayTextId;
+		this.displayTextStyle = textStyle;
 	}
 
 	@Override
 	public Fragment createFragment() {
-		return TextFragment.create(getKey());
+		return DisplayTextFragment.create(getKey(), displayTextId, this.displayTextStyle);
 	}
 
 	@Override
@@ -28,7 +35,7 @@ public class DisplayTextPage extends Page {
 
 	@Override
 	public boolean isCompleted() {
-		return !TextUtils.isEmpty(mData.getString(SIMPLE_DATA_KEY));
+		return true;
 	}
 
 	public DisplayTextPage setValue(String value) {
