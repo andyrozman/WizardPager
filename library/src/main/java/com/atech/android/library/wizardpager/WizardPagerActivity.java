@@ -16,15 +16,12 @@
 
 package com.atech.android.library.wizardpager;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -70,7 +67,6 @@ public class WizardPagerActivity extends FragmentActivity implements
     }
 
 
-
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wizardpager_activity_main);
@@ -81,7 +77,7 @@ public class WizardPagerActivity extends FragmentActivity implements
 
         mWizardModel.registerListener(this);
 
-        mPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
+        mPagerAdapter = new MyPagerAdapter(getSupportFragmentManager(), mWizardModel);
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(mPagerAdapter);
         mStepPagerStrip = (StepPagerStrip) findViewById(R.id.strip);
@@ -100,6 +96,10 @@ public class WizardPagerActivity extends FragmentActivity implements
         mNextButton = (Button) findViewById(R.id.next_button);
         mPrevButton = (Button) findViewById(R.id.prev_button);
 
+        mPrevButton.setText(wizardPagerSettings.getBackStringResourceId());
+        mNextButton.setText(wizardPagerSettings.getNextStringResourceId());
+
+
         mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
@@ -111,7 +111,7 @@ public class WizardPagerActivity extends FragmentActivity implements
                 }
 
                 mEditingAfterReview = false;
-                updateBottomBar();
+                updateBottomBar(null);
             }
         });
 
@@ -138,10 +138,10 @@ public class WizardPagerActivity extends FragmentActivity implements
         mPrevButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (wizardPagerSettings.getWizardStepsWayType()== WizardStepsWayType.PreviousNext)
+                if (wizardPagerSettings.getWizardStepsWayType() == WizardStepsWayType.PreviousNext)
                     mPager.setCurrentItem(mPager.getCurrentItem() - 1);
                 else {
-                    if (mWizardModel.getCurrentPage().getCancelReason()==null) {
+                    if (mWizardModel.getCurrentPage().getCancelReason() == null) {
                         onCloseStatus = "cancel";
                     } else {
                         onCloseStatus = mWizardModel.getCurrentPage().getCancelReason();
@@ -152,7 +152,7 @@ public class WizardPagerActivity extends FragmentActivity implements
         });
 
         onPageTreeChanged();
-        updateBottomBar();
+        updateBottomBar(null);
     }
 
     @Override
@@ -163,11 +163,17 @@ public class WizardPagerActivity extends FragmentActivity implements
         // review
         // step
         mPagerAdapter.notifyDataSetChanged();
-        updateBottomBar();
+        updateBottomBar(null);
     }
 
-    private void updateBottomBar() {
+    private void updateBottomBar(Page page) {
         int position = mPager.getCurrentItem();
+
+        Page currentPage = mCurrentPageSequence.get(position);
+
+//        boolean nextAvailable = true;
+//        boolean prevAvailable = true;
+
         if (position == mCurrentPageSequence.size()) {
             mNextButton.setText(this.wizardPagerSettings.getFinishStringResourceId());
             mNextButton.setBackgroundResource(wizardPagerSettings.getFinishButtonBackground());
@@ -181,15 +187,17 @@ public class WizardPagerActivity extends FragmentActivity implements
             getTheme().resolveAttribute(android.R.attr.textAppearanceMedium, v,
                     true);
             mNextButton.setTextAppearance(this, v.resourceId);
-            mNextButton.setEnabled(position != mPagerAdapter.getCutOffPage());
+            mNextButton.setEnabled(position != mPagerAdapter.getCutOffPage() && currentPage.isNextActionPossible());
         }
 
-        if (wizardPagerSettings.getWizardStepsWayType()==WizardStepsWayType.PreviousNext) {
+        if (wizardPagerSettings.getWizardStepsWayType() == WizardStepsWayType.PreviousNext) {
             mPrevButton
                     .setVisibility(position <= 0 ? View.INVISIBLE : View.VISIBLE);
         } else {
             mPrevButton
                     .setVisibility(View.VISIBLE);
+            mPrevButton.setText(wizardPagerSettings.getBackStringResourceId());
+            mPrevButton.setEnabled(currentPage.isBackActionPossible());
         }
     }
 
@@ -217,7 +225,7 @@ public class WizardPagerActivity extends FragmentActivity implements
                 mConsumePageSelectedEvent = true;
                 mEditingAfterReview = true;
                 mPager.setCurrentItem(i);
-                updateBottomBar();
+                updateBottomBar(null);
                 break;
             }
         }
@@ -228,7 +236,7 @@ public class WizardPagerActivity extends FragmentActivity implements
         if (page.isRequired()) {
             if (recalculateCutOffPage()) {
                 mPagerAdapter.notifyDataSetChanged();
-                updateBottomBar();
+                updateBottomBar(page);
             }
         }
     }
@@ -265,14 +273,16 @@ public class WizardPagerActivity extends FragmentActivity implements
         private int mCutOffPage;
         private Fragment mPrimaryItem;
 
-        public MyPagerAdapter(FragmentManager fm) {
+        AbstractWizardModel wizardModel;
+
+        public MyPagerAdapter(FragmentManager fm, AbstractWizardModel wizardModel) {
             super(fm);
         }
 
         @Override
         public Fragment getItem(int i) {
             if (i >= mCurrentPageSequence.size()) {
-                return new ReviewFragment();
+                return this.wizardModel.getReviewFragment();
             }
 
             return mCurrentPageSequence.get(i).createFragment();

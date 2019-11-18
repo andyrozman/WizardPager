@@ -1,27 +1,27 @@
 package com.example.android.wizardpager.pod;
 
 import android.app.Activity;
-import android.content.Context;
-import android.location.Address;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.TextView;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
+import androidx.fragment.app.Fragment;
+
+import com.atech.android.library.wizardpager.util.WizardPagesUtil;
 import com.example.android.wizardpager.R;
-import com.example.android.wizardpager.pages.CustomerInfoPage;
+import com.tech.freak.wizardpager.model.Page;
 import com.tech.freak.wizardpager.ui.PageFragmentCallbacks;
 
-import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by TechFreak on 04/09/2014.
@@ -33,9 +33,11 @@ public class InitActionFragment extends Fragment {
     private String mKey;
     private InitActionPage mPage;
 
-
+    ProgressBar progressBar;
 
     PodInitActionType podInitActionType;
+    List<PodInitActionType> children;
+    Map<PodInitActionType, CheckBox> mapCheckBoxes;
 
     public static InitActionFragment create(String key, PodInitActionType podInitActionType) {
         Bundle args = new Bundle();
@@ -64,7 +66,33 @@ public class InitActionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.omnipod_initpod_init_action, container, false);
-        ((TextView) rootView.findViewById(android.R.id.title)).setText(mPage.getTitle());
+        WizardPagesUtil.setTitle(mPage, rootView);
+
+        progressBar = rootView.findViewById(R.id.initAction_progressBar);
+
+
+        LinearLayout linearLayout = rootView.findViewById(R.id.initAction_ItemsHolder);
+
+//        CheckBox checkBox1 = new CheckBox(getContext());
+//        checkBox1.setText("Test checkbox");
+//
+//        linearLayout.addView(checkBox1);
+
+        children = podInitActionType.getChildren();
+        mapCheckBoxes = new HashMap<>();
+
+        for (PodInitActionType child : children) {
+
+            CheckBox checkBox1 = new CheckBox(getContext());
+            checkBox1.setText(child.getResourceId());
+            //checkBox1.setEnabled(false);
+            checkBox1.setClickable(false);
+            checkBox1.setTextAppearance(R.style.WizardPagePodContent);
+
+            linearLayout.addView(checkBox1);
+
+            mapCheckBoxes.put(child, checkBox1);
+        }
 
 
         return rootView;
@@ -85,26 +113,6 @@ public class InitActionFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mCallbacks = null;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        System.out.println("ACTION: Start Init Action");
-    }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        System.out.println("ACTION: Resume Init Action");
-    }
-
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        System.out.println("ACTION: Pause Init Action");
     }
 
     @Override
@@ -187,24 +195,36 @@ public class InitActionFragment extends Fragment {
                 @Override
                 protected String doInBackground(Void... params) {
 
-                    SystemClock.sleep(3000);
-                    mPage.setActionCompleted();
+                    SystemClock.sleep(5000);
+                    mPage.setActionCompleted(true);
 
-                    return null;
+                    System.out.println("ACTION: doInBackground Finished: ");
+
+
+                    return "Test";
                 }
 
                 @Override
                 protected void onPostExecute(String result) {
                     super.onPostExecute(result);
 
-                    System.out.println("onPostExecute: " + result);
+                    System.out.println("ACTION: onPostExecute: " + result);
 
-    //                progressBar.setVisibility(View.GONE);
+                    boolean isOk = true;
+
+                    for (PodInitActionType actionType : mapCheckBoxes.keySet()) {
+                        mapCheckBoxes.get(actionType).setChecked(true);
+                        mapCheckBoxes.get(actionType).setTextColor(isOk ? Color.rgb(0, 255, 0) : Color.rgb(255, 0, 0));
+                    }
+
+                    progressBar.setVisibility(View.GONE);
+
+                    mPage.getData().putString(Page.SIMPLE_DATA_KEY, "ddd");
+                    mPage.notifyDataChanged();
                 }
             }.execute();
 
-        }
-        else {
+        } else {
             System.out.println("ACTION: Not visible");
         }
     }

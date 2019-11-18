@@ -1,7 +1,7 @@
 package com.example.android.wizardpager.pod;
 
-import android.support.annotation.StringRes;
-import android.support.v4.app.Fragment;
+import androidx.annotation.StringRes;
+import androidx.fragment.app.Fragment;
 
 import com.tech.freak.wizardpager.model.ModelCallbacks;
 import com.tech.freak.wizardpager.model.Page;
@@ -20,6 +20,7 @@ public class InitActionPage extends Page {
     private PodInitActionType podInitActionType;
 
     private boolean actionCompleted = false;
+    private boolean actionSuccess = false;
 
     public InitActionPage(ModelCallbacks callbacks, String title) {
         super(callbacks, title);
@@ -41,10 +42,31 @@ public class InitActionPage extends Page {
 
     @Override
     public boolean isCompleted() {
+        System.out.println("ACTION: Page.isCompleted " + actionCompleted);
         return actionCompleted;
     }
 
-    public void setActionCompleted() {
+    public void setActionCompleted(boolean success) {
         this.actionCompleted = true;
+        this.actionSuccess = success;
     }
+
+    /**
+     * This is used just if we want to override default behavior (for example when we enter Page we want prevent any action, until something happens.
+     *
+     * @return
+     */
+    public boolean isBackActionPossible() {
+        return actionCompleted;
+    }
+
+    /**
+     * This is used just if we want to override default behavior (for example when we enter Page we want prevent any action, until something happens.
+     *
+     * @return
+     */
+    public boolean isNextActionPossible() {
+        return actionSuccess;
+    }
+
 }

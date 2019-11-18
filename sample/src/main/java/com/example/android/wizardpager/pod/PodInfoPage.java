@@ -1,6 +1,6 @@
 package com.example.android.wizardpager.pod;
 
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 import com.tech.freak.wizardpager.model.ModelCallbacks;
 import com.tech.freak.wizardpager.model.Page;

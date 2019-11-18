@@ -18,6 +18,8 @@ package com.example.android.wizardpager.pod;
 
 import android.content.Context;
 
+import androidx.fragment.app.Fragment;
+
 import com.atech.android.library.wizardpager.model.DisplayTextPage;
 import com.example.android.wizardpager.R;
 import com.tech.freak.wizardpager.model.AbstractWizardModel;
@@ -47,8 +49,18 @@ public class InitPodWizardModel extends AbstractWizardModel {
                         R.string.omnipod_init_pod_wizard_step3_desc,
                         R.style.WizardPagePodContent).setRequired(true),
 
-                new InitActionPage(this, "").setRequired(true),
+                new InitActionPage(this,
+                        R.string.omnipod_init_pod_wizard_step4_title,
+                        PodInitActionType.FillCannulaSetBasalProfileWizardStep).setRequired(true)
 
-                new PodInfoPage(this, "Pod Info").setRequired(true));
+                //new PodInfoPage(this, "Pod Info").setRequired(true)
+        );
     }
+
+
+    public Fragment getReviewFragment() {
+        return new PodInfoFragment();
+    }
+
+
 }

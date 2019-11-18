@@ -19,7 +19,9 @@ package com.tech.freak.wizardpager.model;
 import android.content.Context;
 import android.os.Bundle;
 
-import com.atech.android.library.wizardpager.defs.WizardStepsWayType;
+import androidx.fragment.app.Fragment;
+
+import com.tech.freak.wizardpager.ui.ReviewFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +29,7 @@ import java.util.List;
 /**
  * Represents a wizard model, including the pages/steps in the wizard, their dependencies, and their
  * currently populated choices/values/selections.
- *
+ * <p>
  * To create an actual wizard model, extend this class and implement {@link #onNewRootPageList()}.
  */
 public abstract class AbstractWizardModel implements ModelCallbacks {
@@ -39,8 +41,8 @@ public abstract class AbstractWizardModel implements ModelCallbacks {
     private Page currentPage;
 
     public AbstractWizardModel(Context context) {
-    	mContext = context;
-    	mRootPageList = onNewRootPageList();
+        mContext = context;
+        mRootPageList = onNewRootPageList();
     }
 
     /**
@@ -107,4 +109,14 @@ public abstract class AbstractWizardModel implements ModelCallbacks {
     public Page getCurrentPage() {
         return currentPage;
     }
+
+    /**
+     * Returns ReviewFragment. We can override this for our Model if we want to have different review screen.
+     *
+     * @return
+     */
+    public Fragment getReviewFragment() {
+        return new ReviewFragment();
+    }
+
 }

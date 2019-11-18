@@ -20,7 +20,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <com.tech.freak.wizardpager.ui.StepPagerStrip
         android:id="@+id/strip"
@@ -34,7 +34,7 @@
         android:paddingRight="@dimen/list_item_padding_right"
         android:paddingTop="16dp" />
 
-    <android.support.v4.view.ViewPager
+    <androidx.viewpager.widget.ViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -50,7 +50,7 @@
         style="@style/ButtonBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/prev_button"

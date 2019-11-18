@@ -17,8 +17,9 @@
 package com.tech.freak.wizardpager.model;
 
 import android.os.Bundle;
-import android.support.annotation.StringRes;
-import android.support.v4.app.Fragment;
+
+import androidx.annotation.StringRes;
+import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 
@@ -38,7 +39,8 @@ public abstract class Page implements PageTreeNode {
      */
     protected Bundle mData = new Bundle();
     protected String mTitle;
-    @StringRes int titleId;
+    @StringRes
+    int titleId;
     protected boolean mRequired = false;
     protected String mParentKey;
     protected boolean titleIdSet = false;
@@ -49,6 +51,12 @@ public abstract class Page implements PageTreeNode {
         mTitle = title;
     }
 
+    protected Page(ModelCallbacks callbacks, @StringRes int titleId) {
+        mCallbacks = callbacks;
+        this.titleId = titleId;
+    }
+
+
     public Bundle getData() {
         return mData;
     }
@@ -57,7 +65,8 @@ public abstract class Page implements PageTreeNode {
         return mTitle;
     }
 
-    public @StringRes int getTitleId() {
+    public @StringRes
+    int getTitleId() {
         return titleId;
     }
 
@@ -83,7 +92,7 @@ public abstract class Page implements PageTreeNode {
 
     public String getKey() {
 
-        String titleInput = (mTitle==null) ? "" + titleId : mTitle;
+        String titleInput = (mTitle == null) ? "" + titleId : mTitle;
 
         return (mParentKey != null) ? mParentKey + ":" + titleInput : titleInput;
     }
@@ -115,5 +124,24 @@ public abstract class Page implements PageTreeNode {
     public void setCancelReason(String cancelReason) {
         this.cancelReason = cancelReason;
     }
+
+    /**
+     * This is used just if we want to override default behavior (for example when we enter Page we want prevent any action, until something happens.
+     *
+     * @return
+     */
+    public boolean isBackActionPossible() {
+        return true;
+    }
+
+    /**
+     * This is used just if we want to override default behavior (for example when we enter Page we want prevent any action, until something happens.
+     *
+     * @return
+     */
+    public boolean isNextActionPossible() {
+        return true;
+    }
+
 
 }

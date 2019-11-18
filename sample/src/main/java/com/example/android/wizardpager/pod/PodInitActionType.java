@@ -1,21 +1,23 @@
 package com.example.android.wizardpager.pod;
 
+import com.example.android.wizardpager.R;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public enum PodInitActionType {
 
-    PairAndPrimeWizardStep, //
-    PairPod(PairAndPrimeWizardStep), //
-    PrimePod(PairAndPrimeWizardStep), //
+    PairAndPrimeWizardStep(), //
+    PairPod(R.string.omnipod_init_pod_pair_pod, PairAndPrimeWizardStep), //
+    PrimePod(R.string.omnipod_init_pod_prime_pod, PairAndPrimeWizardStep), //
 
-    FillCannulaSetBasalProfileWizardStep,
-    FillCannula(FillCannulaSetBasalProfileWizardStep),
-    SetBasalProfile(FillCannulaSetBasalProfileWizardStep);
+    FillCannulaSetBasalProfileWizardStep(),
+    FillCannula(R.string.omnipod_init_pod_fill_cannula, FillCannulaSetBasalProfileWizardStep),
+    SetBasalProfile(R.string.omnipod_init_pod_set_basal_profile, FillCannulaSetBasalProfileWizardStep);
 
-
-    private PodInitActionType[] parent;
+    private int resourceId;
+    private PodInitActionType parent;
 
     private static Map<PodInitActionType, List<PodInitActionType>> stepsForWizardStep;
 
@@ -26,13 +28,27 @@ public enum PodInitActionType {
     }
 
 
-    PodInitActionType() {
-
+    PodInitActionType(int resourceId, PodInitActionType parent) {
+        this.resourceId = resourceId;
+        this.parent = parent;
     }
 
 
-    private PodInitActionType(PodInitActionType... parent) {
-        this.parent = parent;
+    PodInitActionType() {
+    }
+
+
+    public List<PodInitActionType> getChildren() {
+
+        List<PodInitActionType> outList = new ArrayList<>();
+
+        for (PodInitActionType value : values()) {
+            if (value.parent == this) {
+                outList.add(value);
+            }
+        }
+
+        return outList;
     }
 
 
@@ -59,4 +75,7 @@ public enum PodInitActionType {
     }
 
 
+    public int getResourceId() {
+        return resourceId;
+    }
 }

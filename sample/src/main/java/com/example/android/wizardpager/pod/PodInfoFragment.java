@@ -3,7 +3,6 @@ package com.example.android.wizardpager.pod;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -11,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
 
 import com.example.android.wizardpager.R;
 import com.example.android.wizardpager.pages.CustomerInfoPage;
@@ -53,7 +54,11 @@ public class PodInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_page_customer_info, container, false);
-        ((TextView) rootView.findViewById(android.R.id.title)).setText(mPage.getTitle());
+
+        if (mPage.getTitle() != null)
+            ((TextView) rootView.findViewById(android.R.id.title)).setText(mPage.getTitle());
+        else
+            ((TextView) rootView.findViewById(android.R.id.title)).setText(mPage.getTitleId());
 
         mNameView = ((TextView) rootView.findViewById(R.id.your_name));
         mNameView.setText(mPage.getData().getString(CustomerInfoPage.NAME_DATA_KEY));

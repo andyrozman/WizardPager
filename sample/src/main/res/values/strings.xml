@@ -46,7 +46,11 @@
     <string name="omnipod_init_pod_wizard_step4_title">Init Pod 4</string>
     <string name="omnipod_init_pod_1_desc">Init Pod</string>
 
-
-
+    <string name="omnipod_init_pod_pair_pod">Pair Pod</string>
+    <string name="omnipod_init_pod_prime_pod">Prime Pod</string>
+    <string name="omnipod_init_pod_fill_cannula">Fill Cannula</string>
+    <string name="omnipod_init_pod_set_basal_profile">Set Basal Profile</string>
+    <string name="common_close">Close</string>
+    <string name="common_back">Cancel</string>
 
 </resources>

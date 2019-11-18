@@ -21,7 +21,7 @@
     <TextView style="@style/WizardPageTitle" />
 
     <TextView
-        android:id="@+id/textActionHeader"
+        android:id="@+id/initAction_header"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_marginTop="40dp"
@@ -29,38 +29,45 @@
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
         android:textSize="20sp"
-        android:text="@string/omnipod_init_pod_wizard_step2_action_header"
-        />
+        android:text="@string/omnipod_init_pod_wizard_step2_action_header" />
 
-    <ScrollView android:layout_width="match_parent"
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
         android:layout_weight="1">
 
-        <LinearLayout android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/initAction_ItemsHolder"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView style="@style/WizardFormLabel"
-                android:text="@string/label_your_name" />
-
-            <EditText android:id="@+id/your_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:saveEnabled="false"
-                android:inputType="textCapWords"
-                android:hint="@string/hint_your_name"
-                android:layout_marginBottom="16dp" />
-
-            <TextView style="@style/WizardFormLabel"
-                android:text="@string/label_your_email" />
-
-            <EditText android:id="@+id/your_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:saveEnabled="false"
-                android:inputType="textEmailAddress"
-                android:hint="@string/hint_your_email" />
-
         </LinearLayout>
     </ScrollView>
+
+
+    <TextView
+        android:id="@+id/initAction_textErrorMessage"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:visibility="gone" />
+
+
+    <ProgressBar
+        android:id="@+id/initAction_progressBar"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_height="80dp" />
+
+    <TextView
+        android:id="@+id/initAction_footer"
+        android:layout_width="match_parent"
+        android:layout_height="30dp" />
+
+
 </LinearLayout>
