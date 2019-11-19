@@ -2,6 +2,7 @@
     package="com.tech.freak.wizardpager">
 
     <application>
+        <activity android:name="com.atech.android.library.wizardpager.WizardPagerActivity" />
     </application>
 
 </manifest>

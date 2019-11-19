@@ -61,9 +61,10 @@ public class WizardPagerActivity extends FragmentActivity implements
     private WizardPagerSettings wizardPagerSettings;
     private Object onCloseStatus;
 
-    public WizardPagerActivity(AbstractWizardModel wizardModel, WizardPagerSettings pagerSettings) {
-        this.mWizardModel = wizardModel;
-        this.wizardPagerSettings = pagerSettings;
+    public WizardPagerActivity() {
+        System.out.println("ZZZZ: In WizardPagerActivity");
+        this.mWizardModel = WizardPagerContext.getInstance().getWizardModel();
+        this.wizardPagerSettings = WizardPagerContext.getInstance().getPagerSettings();
     }
 
 
@@ -121,9 +122,14 @@ public class WizardPagerActivity extends FragmentActivity implements
                 if (mPager.getCurrentItem() == mCurrentPageSequence.size()) {
 
                     AbstractFinishAction finishAction = wizardPagerSettings.getFinishAction();
-                    finishAction.execute();
 
-                    onCloseStatus = finishAction.getFinishActionText();
+                    if (finishAction != null) {
+                        finishAction.execute();
+
+                        onCloseStatus = finishAction.getFinishActionText();
+                    } else {
+                        onCloseStatus = "Finish_OK";
+                    }
 
                 } else {
                     if (mEditingAfterReview) {

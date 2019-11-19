@@ -2,9 +2,9 @@ package com.atech.android.library.wizardpager.defs.action;
 
 import androidx.fragment.app.FragmentManager;
 
-public abstract class AbstractFinishAction {
+public abstract class AbstractCancelAction {
 
-    protected String finishActionText = "Finished_OK";
+    protected String cancelActionText = "Canceled";
 
     public void setFragmentManager(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
@@ -12,10 +12,10 @@ public abstract class AbstractFinishAction {
 
     protected FragmentManager fragmentManager;
 
-    public abstract void execute();
+    public abstract void execute(String cancelReason);
 
-    public String getFinishActionText() {
-        return this.finishActionText;
+    public String getCancelActionText() {
+        return this.cancelActionText;
     }
 
 }

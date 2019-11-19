@@ -4,6 +4,8 @@
     <string name="geo_status_searching">Waiting GPS &#8230;</string>
     <string name="geo_status_found">Location found</string>
     <string name="geo_status_location">%1$s \n(%2$s)</string>
+    <string name="next">Next</string>
+    <string name="prev">Previous</string>
 
     <string-array name="image_photo_sources">
         <item>Pick from gallery</item>

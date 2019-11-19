@@ -11,19 +11,24 @@ import com.tech.freak.wizardpager.R;
 public class WizardPagerSettings {
 
     private WizardStepsWayType wizardStepWay = WizardStepsWayType.PreviousNext;
-    //private String nextText;
-    //private String backText;
-    //private String finishText;
+
     private AbstractFinishAction finishAction;
+    private AbstractFinishAction cancelAction;
 
-    private @StringRes int finishStringResourceId;
-    private @StringRes int backStringResourceId;
-    private @StringRes int nextStringResourceId;
+    private @StringRes
+    int finishStringResourceId;
+    private @StringRes
+    int backStringResourceId;
+    private @StringRes
+    int nextStringResourceId = R.string.next;
 
-    private @DrawableRes int finishButtonBackground;
-    private @DrawableRes int nextButtonBackground;
+    private @DrawableRes
+    int finishButtonBackground = R.drawable.finish_background;
+    private @DrawableRes
+    int nextButtonBackground = R.drawable.selectable_item_background;
 
-    private @StyleRes int finishTextAppearance;
+    private @StyleRes
+    int finishTextAppearance = R.style.TextAppearanceFinish;
 
 
     public WizardStepsWayType getWizardStepsWayType() {
