@@ -121,8 +121,9 @@ public abstract class Page implements PageTreeNode {
         return cancelReason;
     }
 
-    public void setCancelReason(String cancelReason) {
+    public Page setCancelReason(String cancelReason) {
         this.cancelReason = cancelReason;
+        return this;
     }
 
     /**

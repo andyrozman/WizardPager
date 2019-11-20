@@ -131,6 +131,10 @@ public class WizardPagerActivity extends FragmentActivity implements
                         onCloseStatus = "Finish_OK";
                     }
 
+                    finish();
+
+                    WizardPagerContext.getInstance().setCompleteMessage(onCloseStatus);
+
                 } else {
                     if (mEditingAfterReview) {
                         mPager.setCurrentItem(mPagerAdapter.getCount() - 1);
@@ -174,17 +178,14 @@ public class WizardPagerActivity extends FragmentActivity implements
 
     private void updateBottomBar(Page page) {
         int position = mPager.getCurrentItem();
-
-        Page currentPage = mCurrentPageSequence.get(position);
-
-//        boolean nextAvailable = true;
-//        boolean prevAvailable = true;
-
+        Page currentPage = null;
         if (position == mCurrentPageSequence.size()) {
             mNextButton.setText(this.wizardPagerSettings.getFinishStringResourceId());
             mNextButton.setBackgroundResource(wizardPagerSettings.getFinishButtonBackground());
             mNextButton.setTextAppearance(this, wizardPagerSettings.getFinishTextAppearance());
         } else {
+            currentPage = mCurrentPageSequence.get(position);
+
             mNextButton.setText(mEditingAfterReview ? R.string.review
                     : wizardPagerSettings.getNextStringResourceId());
             mNextButton
@@ -200,10 +201,15 @@ public class WizardPagerActivity extends FragmentActivity implements
             mPrevButton
                     .setVisibility(position <= 0 ? View.INVISIBLE : View.VISIBLE);
         } else {
-            mPrevButton
-                    .setVisibility(View.VISIBLE);
-            mPrevButton.setText(wizardPagerSettings.getBackStringResourceId());
-            mPrevButton.setEnabled(currentPage.isBackActionPossible());
+            if (position == mCurrentPageSequence.size()) {
+                mPrevButton.setVisibility(View.INVISIBLE);
+            } else {
+                mPrevButton
+                        .setVisibility(View.VISIBLE);
+                mPrevButton.setText(wizardPagerSettings.getBackStringResourceId());
+                mPrevButton.setEnabled(currentPage.isBackActionPossible());
+            }
+
         }
     }
 
@@ -283,6 +289,7 @@ public class WizardPagerActivity extends FragmentActivity implements
 
         public MyPagerAdapter(FragmentManager fm, AbstractWizardModel wizardModel) {
             super(fm);
+            this.wizardModel = wizardModel;
         }
 
         @Override

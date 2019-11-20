@@ -21,12 +21,13 @@ import android.content.Context;
 import androidx.fragment.app.Fragment;
 
 import com.atech.android.library.wizardpager.model.DisplayTextPage;
+import com.atech.android.library.wizardpager.ui.DisplayTextFragment;
 import com.example.android.wizardpager.R;
 import com.tech.freak.wizardpager.model.AbstractWizardModel;
 import com.tech.freak.wizardpager.model.PageList;
 
-public class InitPodWizardModel extends AbstractWizardModel {
-    public InitPodWizardModel(Context context) {
+public class RemovePodWizardModel extends AbstractWizardModel {
+    public RemovePodWizardModel(Context context) {
         super(context);
     }
 
@@ -51,14 +52,16 @@ public class InitPodWizardModel extends AbstractWizardModel {
 
                 new InitActionPage(this,
                         R.string.omnipod_init_pod_wizard_step4_title,
-                        PodInitActionType.FillCannulaSetBasalProfileWizardStep
-                ).setRequired(true).setCancelReason("Cancel")
+                        PodInitActionType.FillCannulaSetBasalProfileWizardStep).setRequired(true).setCancelReason("Cancel")
+
+                //new PodInfoPage(this, "Pod Info").setRequired(true)
         );
     }
 
 
     public Fragment getReviewFragment() {
-        return new PodInfoFragment();
+        // TODO
+        return DisplayTextFragment.create(null, 0, 0);
     }
 
 

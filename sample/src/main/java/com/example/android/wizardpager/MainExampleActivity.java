@@ -11,6 +11,7 @@ import com.atech.android.library.wizardpager.WizardPagerActivity;
 import com.atech.android.library.wizardpager.WizardPagerContext;
 import com.atech.android.library.wizardpager.data.WizardPagerSettings;
 import com.atech.android.library.wizardpager.defs.WizardStepsWayType;
+import com.example.android.wizardpager.pod.InitPodCancelAction;
 import com.example.android.wizardpager.pod.InitPodWizardModel;
 
 public class MainExampleActivity extends FragmentActivity {
@@ -53,6 +54,8 @@ public class MainExampleActivity extends FragmentActivity {
                     pagerSettings.setFinishButtonBackground(R.drawable.finish_background);
                     pagerSettings.setNextButtonBackground(R.drawable.selectable_item_background);
                     pagerSettings.setBackStringResourceId(R.string.common_back);
+                    pagerSettings.setCancelAction(new InitPodCancelAction());
+
 
                     WizardPagerContext.getInstance().setPagerSettings(pagerSettings);
                     WizardPagerContext.getInstance().setWizardModel(new InitPodWizardModel(getApplicationContext()));
