@@ -131,9 +131,9 @@ public class WizardPagerActivity extends FragmentActivity implements
                         onCloseStatus = "Finish_OK";
                     }
 
-                    finish();
-
                     WizardPagerContext.getInstance().setCompleteMessage(onCloseStatus);
+
+                    finish();
 
                 } else {
                     if (mEditingAfterReview) {
@@ -156,6 +156,9 @@ public class WizardPagerActivity extends FragmentActivity implements
                     } else {
                         onCloseStatus = mWizardModel.getCurrentPage().getCancelReason();
                     }
+
+                    WizardPagerContext.getInstance().setCompleteMessage(onCloseStatus);
+
                     finish();
                 }
             }
