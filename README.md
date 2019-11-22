@@ -33,6 +33,11 @@ dependencies {
 Usage
 ============
 
+1. Add dependency in your project
+
+2. Add
+
+
 There is a sample implementation, so you can see how to add this library to your project. The example uses ActionBarCompat.
 
 
@@ -66,8 +71,9 @@ History
 1.0.0 - Wizard pager was rewritten a little by Tech Freak & Suarez Julian (https://github.com/str4d/WizardPager) and
         made as library.
 
-1.1.0 - made fork and created new groupId
+1.1.0 - made fork of original and started extending library
+      - created new groupId
       - changed build to version 28 (minimal 23)
       - added android X support
-      ? created new main activity (to simplify use)
-      ? refactored sample to use new activity
+      - created new main activity (to simplify use)
+      - refactored sample to use new activity

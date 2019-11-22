@@ -112,7 +112,7 @@ public class WizardPagerActivity extends FragmentActivity implements
                 }
 
                 mEditingAfterReview = false;
-                updateBottomBar(null);
+                updateBottomBar();
             }
         });
 
@@ -165,7 +165,7 @@ public class WizardPagerActivity extends FragmentActivity implements
         });
 
         onPageTreeChanged();
-        updateBottomBar(null);
+        updateBottomBar();
     }
 
     @Override
@@ -176,10 +176,10 @@ public class WizardPagerActivity extends FragmentActivity implements
         // review
         // step
         mPagerAdapter.notifyDataSetChanged();
-        updateBottomBar(null);
+        updateBottomBar();
     }
 
-    private void updateBottomBar(Page page) {
+    private void updateBottomBar() {
         int position = mPager.getCurrentItem();
         Page currentPage = null;
         if (position == mCurrentPageSequence.size()) {
@@ -240,7 +240,7 @@ public class WizardPagerActivity extends FragmentActivity implements
                 mConsumePageSelectedEvent = true;
                 mEditingAfterReview = true;
                 mPager.setCurrentItem(i);
-                updateBottomBar(null);
+                updateBottomBar();
                 break;
             }
         }
@@ -251,7 +251,7 @@ public class WizardPagerActivity extends FragmentActivity implements
         if (page.isRequired()) {
             if (recalculateCutOffPage()) {
                 mPagerAdapter.notifyDataSetChanged();
-                updateBottomBar(page);
+                updateBottomBar();
             }
         }
     }

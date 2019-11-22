@@ -87,7 +87,8 @@ public class InitActionFragment extends Fragment {
             checkBox1.setText(child.getResourceId());
             //checkBox1.setEnabled(false);
             checkBox1.setClickable(false);
-            checkBox1.setTextAppearance(R.style.WizardPagePodContent);
+            checkBox1.setTextAppearance(R.style.WizardPagePodListItem);
+            checkBox1.setHeight(140);
 
             linearLayout.addView(checkBox1);
 
@@ -214,7 +215,7 @@ public class InitActionFragment extends Fragment {
 
                     for (PodInitActionType actionType : mapCheckBoxes.keySet()) {
                         mapCheckBoxes.get(actionType).setChecked(true);
-                        mapCheckBoxes.get(actionType).setTextColor(isOk ? Color.rgb(0, 255, 0) : Color.rgb(255, 0, 0));
+                        mapCheckBoxes.get(actionType).setTextColor(isOk ? Color.rgb(34, 135, 91) : Color.rgb(168, 36, 15));
                     }
 
                     progressBar.setVisibility(View.GONE);
