@@ -27,6 +27,8 @@ public class WizardPagerSettings {
     int finishButtonBackground = R.drawable.finish_background;
     private @DrawableRes
     int nextButtonBackground = R.drawable.selectable_item_background;
+    private @StyleRes
+    int theme = 0;
 
     private @StyleRes
     int finishTextAppearance = R.style.TextAppearanceFinish;
@@ -103,5 +105,13 @@ public class WizardPagerSettings {
 
     public void setCancelAction(AbstractCancelAction cancelAction) {
         this.cancelAction = cancelAction;
+    }
+
+    public int getTheme() {
+        return theme;
+    }
+
+    public void setTheme(int theme) {
+        this.theme = theme;
     }
 }

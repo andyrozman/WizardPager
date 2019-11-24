@@ -62,6 +62,7 @@ public class WizardPagerActivity extends FragmentActivity implements
     private Object onCloseStatus;
 
     public WizardPagerActivity() {
+
         System.out.println("ZZZZ: In WizardPagerActivity");
         this.mWizardModel = WizardPagerContext.getInstance().getWizardModel();
         this.wizardPagerSettings = WizardPagerContext.getInstance().getPagerSettings();
@@ -71,6 +72,7 @@ public class WizardPagerActivity extends FragmentActivity implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wizardpager_activity_main);
+        setTheme(this.wizardPagerSettings.getTheme());
 
         if (savedInstanceState != null) {
             mWizardModel.load(savedInstanceState.getBundle("model"));
@@ -194,9 +196,9 @@ public class WizardPagerActivity extends FragmentActivity implements
             mNextButton
                     .setBackgroundResource(wizardPagerSettings.getNextButtonBackground());
             TypedValue v = new TypedValue();
-            getTheme().resolveAttribute(android.R.attr.textAppearanceMedium, v,
+            getTheme().resolveAttribute(android.R.attr.textAppearanceButton, v,
                     true);
-            mNextButton.setTextAppearance(this, v.resourceId);
+            mNextButton.setTextAppearance(v.resourceId);
             mNextButton.setEnabled(position != mPagerAdapter.getCutOffPage() && currentPage.isNextActionPossible());
         }
 

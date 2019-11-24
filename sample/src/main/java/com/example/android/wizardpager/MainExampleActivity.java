@@ -34,6 +34,8 @@ public class MainExampleActivity extends FragmentActivity {
 
                 System.out.println("ZZZZ: In Main Example Activity");
 
+                pagerSettings.setTheme(R.style.AppTheme);
+
 
                 if (sampleUse == 1) {
 
