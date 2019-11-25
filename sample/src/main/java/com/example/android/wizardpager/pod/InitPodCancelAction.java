@@ -9,6 +9,8 @@ public class InitPodCancelAction extends AbstractCancelAction {
             this.cancelActionText = cancelReason;
         }
 
+        System.out.println("InitPodCancelAction: " + cancelReason);
+
         if (this.cancelActionText.equals("Cancel")) {
             // TODO
             // remove pod from SP

@@ -58,7 +58,6 @@ public class MainExampleActivity extends FragmentActivity {
                     pagerSettings.setBackStringResourceId(R.string.common_back);
                     pagerSettings.setCancelAction(new InitPodCancelAction());
 
-
                     WizardPagerContext.getInstance().setPagerSettings(pagerSettings);
                     WizardPagerContext.getInstance().setWizardModel(new InitPodWizardModel(getApplicationContext()));
 

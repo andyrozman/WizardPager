@@ -30,6 +30,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.atech.android.library.wizardpager.data.WizardPagerSettings;
 import com.atech.android.library.wizardpager.defs.WizardStepsWayType;
+import com.atech.android.library.wizardpager.defs.action.AbstractCancelAction;
 import com.atech.android.library.wizardpager.defs.action.AbstractFinishAction;
 import com.tech.freak.wizardpager.R;
 import com.tech.freak.wizardpager.model.AbstractWizardModel;
@@ -153,10 +154,25 @@ public class WizardPagerActivity extends FragmentActivity implements
                 if (wizardPagerSettings.getWizardStepsWayType() == WizardStepsWayType.PreviousNext)
                     mPager.setCurrentItem(mPager.getCurrentItem() - 1);
                 else {
-                    if (mWizardModel.getCurrentPage().getCancelReason() == null) {
+                    System.out.println("Page: mWizardModel.getCurrentPage(): " + mWizardModel.getCurrentPage());
+
+                    int position = mPager.getCurrentItem();
+                    Page currentPage = mCurrentPageSequence.get(position);
+
+                    System.out.println("Page: mCurrentPageSequence.get(position): " + currentPage);
+
+                    if (currentPage == null || currentPage.getCancelReason() == null) {
                         onCloseStatus = "cancel";
                     } else {
-                        onCloseStatus = mWizardModel.getCurrentPage().getCancelReason();
+                        onCloseStatus = currentPage.getCancelReason();
+                    }
+
+                    System.out.println("Page: cancelReason: " + onCloseStatus);
+
+                    AbstractCancelAction cancelAction = wizardPagerSettings.getCancelAction();
+
+                    if (cancelAction != null) {
+                        cancelAction.execute(onCloseStatus.toString());
                     }
 
                     WizardPagerContext.getInstance().setCompleteMessage(onCloseStatus);
