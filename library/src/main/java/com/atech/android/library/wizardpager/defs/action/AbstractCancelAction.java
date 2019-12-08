@@ -18,4 +18,8 @@ public abstract class AbstractCancelAction {
         return this.cancelActionText;
     }
 
+    public FragmentManager getFragmentManager() {
+        return this.fragmentManager;
+    }
+
 }

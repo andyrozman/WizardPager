@@ -32,6 +32,8 @@ import com.atech.android.library.wizardpager.data.WizardPagerSettings;
 import com.atech.android.library.wizardpager.defs.WizardStepsWayType;
 import com.atech.android.library.wizardpager.defs.action.AbstractCancelAction;
 import com.atech.android.library.wizardpager.defs.action.AbstractFinishAction;
+import com.atech.android.library.wizardpager.defs.action.CancelActionInterface;
+import com.atech.android.library.wizardpager.defs.action.FinishActionInterface;
 import com.tech.freak.wizardpager.R;
 import com.tech.freak.wizardpager.model.AbstractWizardModel;
 import com.tech.freak.wizardpager.model.ModelCallbacks;
@@ -124,7 +126,7 @@ public class WizardPagerActivity extends FragmentActivity implements
             public void onClick(View view) {
                 if (mPager.getCurrentItem() == mCurrentPageSequence.size()) {
 
-                    AbstractFinishAction finishAction = wizardPagerSettings.getFinishAction();
+                    FinishActionInterface finishAction = wizardPagerSettings.getFinishAction();
 
                     if (finishAction != null) {
                         finishAction.execute();
@@ -154,12 +156,12 @@ public class WizardPagerActivity extends FragmentActivity implements
                 if (wizardPagerSettings.getWizardStepsWayType() == WizardStepsWayType.PreviousNext)
                     mPager.setCurrentItem(mPager.getCurrentItem() - 1);
                 else {
-                    System.out.println("Page: mWizardModel.getCurrentPage(): " + mWizardModel.getCurrentPage());
+                    //System.out.println("Page: mWizardModel.getCurrentPage(): " + mWizardModel.getCurrentPage());
 
                     int position = mPager.getCurrentItem();
                     Page currentPage = mCurrentPageSequence.get(position);
 
-                    System.out.println("Page: mCurrentPageSequence.get(position): " + currentPage);
+                    //System.out.println("Page: mCurrentPageSequence.get(position): " + currentPage);
 
                     if (currentPage == null || currentPage.getCancelReason() == null) {
                         onCloseStatus = "cancel";
@@ -167,9 +169,9 @@ public class WizardPagerActivity extends FragmentActivity implements
                         onCloseStatus = currentPage.getCancelReason();
                     }
 
-                    System.out.println("Page: cancelReason: " + onCloseStatus);
+                    //System.out.println("Page: cancelReason: " + onCloseStatus);
 
-                    AbstractCancelAction cancelAction = wizardPagerSettings.getCancelAction();
+                    CancelActionInterface cancelAction = wizardPagerSettings.getCancelAction();
 
                     if (cancelAction != null) {
                         cancelAction.execute(onCloseStatus.toString());
@@ -203,7 +205,7 @@ public class WizardPagerActivity extends FragmentActivity implements
         if (position == mCurrentPageSequence.size()) {
             mNextButton.setText(this.wizardPagerSettings.getFinishStringResourceId());
             mNextButton.setBackgroundResource(wizardPagerSettings.getFinishButtonBackground());
-            mNextButton.setTextAppearance(this, wizardPagerSettings.getFinishTextAppearance());
+            mNextButton.setTextAppearance(wizardPagerSettings.getFinishTextAppearance());
         } else {
             currentPage = mCurrentPageSequence.get(position);
 

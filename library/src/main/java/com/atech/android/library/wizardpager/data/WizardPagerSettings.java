@@ -7,14 +7,16 @@ import androidx.annotation.StyleRes;
 import com.atech.android.library.wizardpager.defs.WizardStepsWayType;
 import com.atech.android.library.wizardpager.defs.action.AbstractCancelAction;
 import com.atech.android.library.wizardpager.defs.action.AbstractFinishAction;
+import com.atech.android.library.wizardpager.defs.action.CancelActionInterface;
+import com.atech.android.library.wizardpager.defs.action.FinishActionInterface;
 import com.tech.freak.wizardpager.R;
 
 public class WizardPagerSettings {
 
     private WizardStepsWayType wizardStepWay = WizardStepsWayType.PreviousNext;
 
-    private AbstractFinishAction finishAction;
-    private AbstractCancelAction cancelAction;
+    private FinishActionInterface finishAction;
+    private CancelActionInterface cancelAction;
 
     private @StringRes
     int finishStringResourceId;
@@ -43,11 +45,11 @@ public class WizardPagerSettings {
         this.wizardStepWay = wizardStepWay;
     }
 
-    public AbstractFinishAction getFinishAction() {
+    public FinishActionInterface getFinishAction() {
         return finishAction;
     }
 
-    public void setFinishAction(AbstractFinishAction finishAction) {
+    public void setFinishAction(FinishActionInterface finishAction) {
         this.finishAction = finishAction;
     }
 
@@ -99,11 +101,11 @@ public class WizardPagerSettings {
         this.nextStringResourceId = nextStringResourceId;
     }
 
-    public AbstractCancelAction getCancelAction() {
+    public CancelActionInterface getCancelAction() {
         return cancelAction;
     }
 
-    public void setCancelAction(AbstractCancelAction cancelAction) {
+    public void setCancelAction(CancelActionInterface cancelAction) {
         this.cancelAction = cancelAction;
     }
 

@@ -5,12 +5,12 @@ import com.tech.freak.wizardpager.model.AbstractWizardModel;
 
 public class WizardPagerContext {
 
-
     private static final WizardPagerContext instance = new WizardPagerContext();
 
     private AbstractWizardModel wizardModel;
     private WizardPagerSettings pagerSettings;
     private Object completeMessage;
+    private Object parentActivity;
 
     public static WizardPagerContext getInstance() {
         return instance;
@@ -20,6 +20,7 @@ public class WizardPagerContext {
         this.pagerSettings = null;
         this.wizardModel = null;
         this.completeMessage = null;
+        this.pagerSettings = null;
     }
 
 
@@ -45,5 +46,13 @@ public class WizardPagerContext {
 
     public Object getCompleteMessage() {
         return completeMessage;
+    }
+
+    public Object getParentActivity() {
+        return parentActivity;
+    }
+
+    public void setParentActivity(Object parentActivity) {
+        this.parentActivity = parentActivity;
     }
 }

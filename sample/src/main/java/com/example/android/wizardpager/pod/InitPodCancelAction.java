@@ -1,8 +1,13 @@
 package com.example.android.wizardpager.pod;
 
-import com.atech.android.library.wizardpager.defs.action.AbstractCancelAction;
+import androidx.fragment.app.FragmentManager;
 
-public class InitPodCancelAction extends AbstractCancelAction {
+import com.atech.android.library.wizardpager.defs.action.AbstractCancelAction;
+import com.atech.android.library.wizardpager.defs.action.CancelActionInterface;
+
+public class InitPodCancelAction extends AbstractCancelAction implements CancelActionInterface {
+
+
     @Override
     public void execute(String cancelReason) {
         if (cancelReason != null && cancelReason.trim().length() > 0) {
