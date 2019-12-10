@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
@@ -24,20 +25,25 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by TechFreak on 04/09/2014.
+ * Created by andy on 12/11/2019
  */
-public class InitActionFragment extends Fragment {
+public class InitActionFragment extends Fragment implements PodInitReceiver {
     private static final String ARG_KEY = "key";
 
-    private PageFragmentCallbacks mCallbacks;
-    private String mKey;
-    private InitActionPage mPage;
+    protected PageFragmentCallbacks mCallbacks;
+    protected String mKey;
+    protected InitActionPage mPage;
 
-    ProgressBar progressBar;
+    protected ProgressBar progressBar;
+    protected TextView errorView;
 
-    PodInitActionType podInitActionType;
-    List<PodInitActionType> children;
-    Map<PodInitActionType, CheckBox> mapCheckBoxes;
+    protected PodInitActionType podInitActionType;
+    protected List<PodInitActionType> children;
+    protected Map<PodInitActionType, CheckBox> mapCheckBoxes;
+    protected InitActionFragment instance;
+
+    //protected PumpEnactResult callResult;
+
 
     public static InitActionFragment create(String key, PodInitActionType podInitActionType) {
         Bundle args = new Bundle();
@@ -50,7 +56,7 @@ public class InitActionFragment extends Fragment {
     }
 
     public InitActionFragment() {
-
+        this.instance = this;
     }
 
     @Override
@@ -68,15 +74,12 @@ public class InitActionFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.omnipod_initpod_init_action, container, false);
         WizardPagesUtil.setTitle(mPage, rootView);
 
-        progressBar = rootView.findViewById(R.id.initAction_progressBar);
+        this.progressBar = rootView.findViewById(R.id.initAction_progressBar);
+        this.errorView = rootView.findViewById(R.id.initAction_textErrorMessage);
 
+        TextView headerView = rootView.findViewById(R.id.initAction_header);
 
         LinearLayout linearLayout = rootView.findViewById(R.id.initAction_ItemsHolder);
-
-//        CheckBox checkBox1 = new CheckBox(getContext());
-//        checkBox1.setText("Test checkbox");
-//
-//        linearLayout.addView(checkBox1);
 
         children = podInitActionType.getChildren();
         mapCheckBoxes = new HashMap<>();
@@ -85,16 +88,20 @@ public class InitActionFragment extends Fragment {
 
             CheckBox checkBox1 = new CheckBox(getContext());
             checkBox1.setText(child.getResourceId());
-            //checkBox1.setEnabled(false);
             checkBox1.setClickable(false);
             checkBox1.setTextAppearance(R.style.WizardPagePodListItem);
             checkBox1.setHeight(140);
+            checkBox1.setTextSize(16);
+            checkBox1.setTextColor(headerView.getTextColors().getDefaultColor());
 
             linearLayout.addView(checkBox1);
 
             mapCheckBoxes.put(child, checkBox1);
         }
 
+//        if (podInitActionType==PodInitActionType.DeactivatePodWizardStep) {
+//            headerView.setText(R.string.omnipod_remove_pod_wizard_step2_action_header);
+//        }
 
         return rootView;
     }
@@ -116,20 +123,6 @@ public class InitActionFragment extends Fragment {
         mCallbacks = null;
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-    }
-
-    @Override
-    public void setMenuVisibility(boolean menuVisible) {
-        super.setMenuVisibility(menuVisible);
-
-        // In a future update to the support library, this should override setUserVisibleHint
-        // instead of setMenuVisibility.
-
-    }
 
     public PodInitActionType getPodInitActionType() {
         return podInitActionType;
@@ -138,95 +131,88 @@ public class InitActionFragment extends Fragment {
 
     public void setPodInitActionType(PodInitActionType podInitActionType) {
         this.podInitActionType = podInitActionType;
-
-
-//        new AsyncTask<Void, Void, String>() {
-//
-//            protected void onPreExecute() {
-//                //progressBar.setVisibility(View.VISIBLE);
-//            }
-//
-//            ;
-//
-//            @Override
-//            protected String doInBackground(Void... params) {
-//
-//                SystemClock.sleep(3000);
-//                mPage.setActionCompleted();
-//
-//                return null;
-//            }
-//
-//            @Override
-//            protected void onPostExecute(String result) {
-//                super.onPostExecute(result);
-//
-//                System.out.println("onPostExecute: " + result);
-//
-////                progressBar.setVisibility(View.GONE);
-//            }
-//        }.execute();
-//
-
-//        new Thread(() -> {
-//
-//            SystemClock.sleep(3000);
-//            mPage.setActionCompleted();
-//
-//        }).start();
-
-
     }
 
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
+        //System.out.println("ACTION: setUserVisibleHint="+ isVisibleToUser);
         if (isVisibleToUser) {
-            System.out.println("ACTION: Visible");
+            //System.out.println("ACTION: Visible");
 
-            new AsyncTask<Void, Void, String>() {
-
-                protected void onPreExecute() {
-                    //progressBar.setVisibility(View.VISIBLE);
-                }
-
-                ;
-
-                @Override
-                protected String doInBackground(Void... params) {
-
-                    SystemClock.sleep(5000);
-                    mPage.setActionCompleted(true);
-
-                    System.out.println("ACTION: doInBackground Finished: ");
+            new InitPodTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
 
-                    return "Test";
-                }
 
-                @Override
-                protected void onPostExecute(String result) {
-                    super.onPostExecute(result);
-
-                    System.out.println("ACTION: onPostExecute: " + result);
-
-                    boolean isOk = true;
-
-                    for (PodInitActionType actionType : mapCheckBoxes.keySet()) {
-                        mapCheckBoxes.get(actionType).setChecked(true);
-                        mapCheckBoxes.get(actionType).setTextColor(isOk ? Color.rgb(34, 135, 91) : Color.rgb(168, 36, 15));
-                    }
-
-                    progressBar.setVisibility(View.GONE);
-
-                    mPage.getData().putString(Page.SIMPLE_DATA_KEY, "ddd");
-                    mPage.notifyDataChanged();
-                }
-            }.execute();
 
         } else {
             System.out.println("ACTION: Not visible");
         }
     }
+
+    public void actionOnReceiveResponse(String result) {
+//        System.out.println("ACTION: actionOnReceiveResponse: " + result);
+//
+//        boolean isOk = callResult.success;
+//
+//        progressBar.setVisibility(View.GONE);
+//
+//        if (!isOk) {
+//            errorView.setVisibility(View.VISIBLE);
+//            errorView.setText(callResult.comment);
+//        }
+//
+//        mPage.setActionCompleted(isOk);
+//
+//        mPage.getData().putString(Page.SIMPLE_DATA_KEY, "ddd");
+//        mPage.notifyDataChanged();
+    }
+
+    @Override
+    public void returnInitTaskStatus(PodInitActionType podInitActionType, boolean isSuccess, String errorMessage) {
+        if (podInitActionType.isParent()) {
+            for (PodInitActionType actionType : mapCheckBoxes.keySet()) {
+                setCheckBox(actionType, isSuccess);
+            }
+
+            // special handling for init
+            processOnFinishedActions(isSuccess, errorMessage);
+
+        } else {
+            setCheckBox(podInitActionType, isSuccess);
+        }
+    }
+
+
+    private void processOnFinishedActions(boolean isOk, String errorMessage) {
+
+        getActivity().runOnUiThread(() -> {
+
+            progressBar.setVisibility(View.GONE);
+
+            if (!isOk) {
+                errorView.setVisibility(View.VISIBLE);
+                errorView.setText(errorMessage);
+            }
+
+            mPage.setActionCompleted(isOk);
+
+            mPage.getData().putString(Page.SIMPLE_DATA_KEY, "ddd");
+            mPage.notifyDataChanged();
+
+        });
+
+    }
+
+
+    public void setCheckBox(PodInitActionType podInitActionType, boolean isSuccess) {
+        getActivity().runOnUiThread(() -> {
+            mapCheckBoxes.get(podInitActionType).setChecked(true);
+            mapCheckBoxes.get(podInitActionType).setTextColor(isSuccess ? Color.rgb(34, 135, 91) :
+                    Color.rgb(168, 36, 15));
+        });
+    }
+
+
 }

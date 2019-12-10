@@ -2,15 +2,14 @@ package com.atech.android.library.wizardpager.defs.action;
 
 import androidx.fragment.app.FragmentManager;
 
-public abstract class AbstractCancelAction {
+public abstract class AbstractCancelAction implements CancelActionInterface {
 
     protected String cancelActionText = "Canceled";
+    protected FragmentManager fragmentManager;
 
     public void setFragmentManager(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
     }
-
-    protected FragmentManager fragmentManager;
 
     public abstract void execute(String cancelReason);
 
