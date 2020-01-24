@@ -23,7 +23,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -171,8 +170,6 @@ public class StepPagerStrip extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
-        Log.e("StepPageerStrip", "onTouchEvent");
-
 //        if (mOnPageSelectedListener != null) {
 //            switch (event.getActionMasked()) {
 //                case MotionEvent.ACTION_DOWN:
@@ -185,6 +182,8 @@ public class StepPagerStrip extends View {
 //            }
 //        }
 //        return super.onTouchEvent(event);
+
+        // required to disable swiping
         return false;
     }
 

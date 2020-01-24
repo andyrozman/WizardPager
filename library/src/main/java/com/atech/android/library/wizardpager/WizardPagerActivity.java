@@ -33,6 +33,7 @@ import com.atech.android.library.wizardpager.data.WizardPagerSettings;
 import com.atech.android.library.wizardpager.defs.WizardStepsWayType;
 import com.atech.android.library.wizardpager.defs.action.CancelActionInterface;
 import com.atech.android.library.wizardpager.defs.action.FinishActionInterface;
+import com.atech.android.library.wizardpager.ui.WizardViewPager;
 import com.tech.freak.wizardpager.R;
 import com.tech.freak.wizardpager.model.AbstractWizardModel;
 import com.tech.freak.wizardpager.model.ModelCallbacks;
@@ -40,7 +41,6 @@ import com.tech.freak.wizardpager.model.Page;
 import com.tech.freak.wizardpager.ui.PageFragmentCallbacks;
 import com.tech.freak.wizardpager.ui.ReviewFragment;
 import com.tech.freak.wizardpager.ui.StepPagerStrip;
-import com.tech.freak.wizardpager.ui.WizardViewPager;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.tech.freak.wizardpager.ui;
+package com.atech.android.library.wizardpager.ui;
 
 import android.content.Context;
 import android.util.AttributeSet;
