@@ -23,9 +23,11 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+
 import com.tech.freak.wizardpager.R;
 
 public class StepPagerStrip extends View {
@@ -140,10 +142,10 @@ public class StepPagerStrip extends View {
             canvas.drawRect(mTempRectF, i < mCurrentPage
                     ? mPrevTabPaint
                     : (i > mCurrentPage
-                            ? mNextTabPaint
-                            : (i == mPageCount - 1
-                                    ? mSelectedLastTabPaint
-                                    : mSelectedTabPaint)));
+                    ? mNextTabPaint
+                    : (i == mPageCount - 1
+                    ? mSelectedLastTabPaint
+                    : mSelectedTabPaint)));
         }
     }
 
@@ -168,18 +170,22 @@ public class StepPagerStrip extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (mOnPageSelectedListener != null) {
-            switch (event.getActionMasked()) {
-                case MotionEvent.ACTION_DOWN:
-                case MotionEvent.ACTION_MOVE:
-                    int position = hitTest(event.getX());
-                    if (position >= 0) {
-                        mOnPageSelectedListener.onPageStripSelected(position);
-                    }
-                    return true;
-            }
-        }
-        return super.onTouchEvent(event);
+
+        Log.e("StepPageerStrip", "onTouchEvent");
+
+//        if (mOnPageSelectedListener != null) {
+//            switch (event.getActionMasked()) {
+//                case MotionEvent.ACTION_DOWN:
+//                case MotionEvent.ACTION_MOVE:
+//                    int position = hitTest(event.getX());
+//                    if (position >= 0) {
+//                        mOnPageSelectedListener.onPageStripSelected(position);
+//                    }
+//                    return true;
+//            }
+//        }
+//        return super.onTouchEvent(event);
+        return false;
     }
 
     private int hitTest(float x) {

@@ -34,7 +34,7 @@
         android:paddingRight="@dimen/list_item_padding_right"
         android:paddingTop="16dp" />
 
-    <androidx.viewpager.widget.ViewPager
+    <com.tech.freak.wizardpager.ui.WizardViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"

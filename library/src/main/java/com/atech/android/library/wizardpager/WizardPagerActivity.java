@@ -18,6 +18,7 @@ package com.atech.android.library.wizardpager;
 
 import android.os.Bundle;
 import android.util.TypedValue;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -30,8 +31,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.atech.android.library.wizardpager.data.WizardPagerSettings;
 import com.atech.android.library.wizardpager.defs.WizardStepsWayType;
-import com.atech.android.library.wizardpager.defs.action.AbstractCancelAction;
-import com.atech.android.library.wizardpager.defs.action.AbstractFinishAction;
 import com.atech.android.library.wizardpager.defs.action.CancelActionInterface;
 import com.atech.android.library.wizardpager.defs.action.FinishActionInterface;
 import com.tech.freak.wizardpager.R;
@@ -41,13 +40,14 @@ import com.tech.freak.wizardpager.model.Page;
 import com.tech.freak.wizardpager.ui.PageFragmentCallbacks;
 import com.tech.freak.wizardpager.ui.ReviewFragment;
 import com.tech.freak.wizardpager.ui.StepPagerStrip;
+import com.tech.freak.wizardpager.ui.WizardViewPager;
 
 import java.util.List;
 
 public class WizardPagerActivity extends FragmentActivity implements
         PageFragmentCallbacks, ReviewFragment.Callbacks, ModelCallbacks {
 
-    private ViewPager mPager;
+    private WizardViewPager mPager;
     private MyPagerAdapter mPagerAdapter;
 
     private boolean mEditingAfterReview;
@@ -83,8 +83,10 @@ public class WizardPagerActivity extends FragmentActivity implements
 
         mWizardModel.registerListener(this);
 
+        //this.onTouchEvent(this)
+
         mPagerAdapter = new MyPagerAdapter(getSupportFragmentManager(), mWizardModel);
-        mPager = (ViewPager) findViewById(R.id.pager);
+        mPager = findViewById(R.id.pager);
         mPager.setAdapter(mPagerAdapter);
         mStepPagerStrip = (StepPagerStrip) findViewById(R.id.strip);
         mStepPagerStrip
@@ -196,7 +198,15 @@ public class WizardPagerActivity extends FragmentActivity implements
         // review
         // step
         mPagerAdapter.notifyDataSetChanged();
+
         updateBottomBar();
+    }
+
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return false;
+        //return super.onTouchEvent(event);
     }
 
     private void updateBottomBar() {
