@@ -71,9 +71,18 @@ History
 1.0.0 - Wizard pager was rewritten a little by Tech Freak & Suarez Julian (https://github.com/str4d/WizardPager) and
         made as library.
 
-1.1.0 - made fork of original and started extending library
+1.1.0 - made fork of original and started extending library (everything added under package com.atech.android.library.wizardpager)
       - created new groupId
       - changed build to version 28 (minimal 23)
       - added android X support
       - created new main activity (to simplify use)
+      - added Actions for when wizard is finished (either succesfully or by canceling)
+      - added DisplayTextPage for displaying text
+      - added possibility for custom End page
+      - added WizardPagerSettings, which can be used to to modify behaviour
+      - added the way wizard can be handled (WizardStepsWayType, standard Next/Previous or one-way Next/Cancel)
+      - added WizardPagerContext to be used when using Wizard
       - refactored sample to use new activity
+      - changes in default style
+
+1.1.1 - disabled swiping
