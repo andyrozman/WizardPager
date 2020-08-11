@@ -33,9 +33,6 @@ public class DisplayTextFragment extends Fragment {
 
     protected TextView displayText;
 
-    private DisplayTextFragment() {
-    }
-
     public static DisplayTextFragment create(String key, @StringRes int displayTextId, @StyleRes int displayTextStyle) {
         Bundle args = new Bundle();
         args.putString(ARG_KEY, key);
