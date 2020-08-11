@@ -17,28 +17,30 @@ import com.tech.freak.wizardpager.model.Page;
 import com.tech.freak.wizardpager.ui.PageFragmentCallbacks;
 
 public class DisplayTextFragment extends Fragment {
-    protected static final String ARG_KEY = "key";
+    private static final String ARG_KEY = "key";
+    private static final String ARG_DISPLAY_TEXT_ID = "displayTextId";
+    private static final String ARG_DISPLAY_TEXT_STYLE = "displayTextStyle";
 
     private PageFragmentCallbacks mCallbacks;
     private String mKey;
     private Page mPage;
 
     @StringRes
-    int displayTextId;
+    private int displayTextId;
 
     @StyleRes
-    int displayTextStyle;
+    private int displayTextStyle;
 
     protected TextView displayText;
 
     public static DisplayTextFragment create(String key, @StringRes int displayTextId, @StyleRes int displayTextStyle) {
         Bundle args = new Bundle();
         args.putString(ARG_KEY, key);
+        args.putInt(ARG_DISPLAY_TEXT_ID, displayTextId);
+        args.putInt(ARG_DISPLAY_TEXT_STYLE, displayTextStyle);
 
         DisplayTextFragment f = new DisplayTextFragment();
         f.setArguments(args);
-        f.setDisplayTextId(displayTextId);
-        f.setDisplayTextStyle(displayTextStyle);
         return f;
     }
 
@@ -48,6 +50,8 @@ public class DisplayTextFragment extends Fragment {
 
         Bundle args = getArguments();
         mKey = args.getString(ARG_KEY);
+        displayTextId = args.getInt(ARG_DISPLAY_TEXT_ID);
+        displayTextStyle = args.getInt(ARG_DISPLAY_TEXT_STYLE);
         mPage = mCallbacks.onGetPage(mKey);
     }
 
@@ -58,7 +62,7 @@ public class DisplayTextFragment extends Fragment {
                 container, false);
         WizardPagesUtil.setTitle(mPage, rootView);
 
-        displayText = (TextView) rootView.findViewById(R.id.pageDisplay_textView);
+        displayText = rootView.findViewById(R.id.pageDisplay_textView);
         displayText.setText(displayTextId);
         displayText.setTextAppearance(displayTextStyle);
         return rootView;
@@ -85,32 +89,11 @@ public class DisplayTextFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
     }
 
     @Override
     public void setMenuVisibility(boolean menuVisible) {
         super.setMenuVisibility(menuVisible);
     }
-
-
-    public int getDisplayTextId() {
-        return this.displayTextId;
-    }
-
-    public void setDisplayTextId(int displayTextId) {
-        this.displayTextId = displayTextId;
-    }
-
-
-    public int getDisplayTextStyle() {
-        return displayTextStyle;
-    }
-
-    public void setDisplayTextStyle(int displayTextStyle) {
-        this.displayTextStyle = displayTextStyle;
-    }
-
 
 }
