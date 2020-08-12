@@ -3,6 +3,7 @@ package com.atech.android.library.wizardpager.data;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.atech.android.library.wizardpager.defs.WizardStepsWayType;
 import com.atech.android.library.wizardpager.defs.action.AbstractCancelAction;
@@ -14,6 +15,7 @@ import com.tech.freak.wizardpager.R;
 public class WizardPagerSettings {
 
     private WizardStepsWayType wizardStepWay = WizardStepsWayType.PreviousNext;
+    private int pagerAdapterBehavior = FragmentStatePagerAdapter.BEHAVIOR_SET_USER_VISIBLE_HINT;
 
     private FinishActionInterface finishAction;
     private CancelActionInterface cancelAction;
@@ -115,5 +117,17 @@ public class WizardPagerSettings {
 
     public void setTheme(int theme) {
         this.theme = theme;
+    }
+
+    public int getPagerAdapterBehavior() {
+        return pagerAdapterBehavior;
+    }
+
+    /**
+     * @param pagerAdapterBehavior the behavior for the FragmentStatePagerAdapter; defaults to
+     *                             FragmentStatePagerAdapter.BEHAVIOR_SET_USER_VISIBLE_HINT
+     */
+    public void setPagerAdapterBehavior(int pagerAdapterBehavior) {
+        this.pagerAdapterBehavior = pagerAdapterBehavior;
     }
 }
