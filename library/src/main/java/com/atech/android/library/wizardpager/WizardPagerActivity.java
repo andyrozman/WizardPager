@@ -85,7 +85,7 @@ public class WizardPagerActivity extends FragmentActivity implements
 
         //this.onTouchEvent(this)
 
-        mPagerAdapter = new MyPagerAdapter(getSupportFragmentManager(), mWizardModel);
+        mPagerAdapter = new MyPagerAdapter(getSupportFragmentManager(), wizardPagerSettings.getPagerAdapterBehavior(), mWizardModel);
         mPager = findViewById(R.id.pager);
         mPager.setAdapter(mPagerAdapter);
         mStepPagerStrip = (StepPagerStrip) findViewById(R.id.strip);
@@ -320,8 +320,8 @@ public class WizardPagerActivity extends FragmentActivity implements
 
         AbstractWizardModel wizardModel;
 
-        public MyPagerAdapter(FragmentManager fm, AbstractWizardModel wizardModel) {
-            super(fm);
+        public MyPagerAdapter(FragmentManager fm, int pagerAdapterBehavior, AbstractWizardModel wizardModel) {
+            super(fm, pagerAdapterBehavior);
             this.wizardModel = wizardModel;
         }
 
